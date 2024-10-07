@@ -6,7 +6,9 @@ import (
 	"github.com/cometbft/cometbft/rpc/client/http"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
-	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
+
+	// "github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	bank "github.com/cosmos/cosmos-sdk/x/bank/types"
 	staking "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"github.com/urfave/cli/v2"
@@ -119,7 +121,8 @@ func DebugConsensusKeyRun(cCtx *cli.Context) error {
 	}
 
 	val := resp.Validator
-	pubkey := ed25519.PubKey{Key: val.ConsensusPubkey.Value[2:]}
+	// pubkey := ed25519.PubKey{Key: val.ConsensusPubkey.Value[2:]}
+	pubkey := secp256k1.PubKey{Key: val.ConsensusPubkey.Value[2:]}
 	address := pubkey.Address().String()
 
 	fmt.Println(address)
