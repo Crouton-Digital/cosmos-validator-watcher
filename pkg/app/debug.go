@@ -47,6 +47,8 @@ func DebugDenomRun(cCtx *cli.Context) error {
 }
 
 func DebugValidatorRun(cCtx *cli.Context) error {
+	// fmt.Println("DebugValidatorRun")
+
 	var (
 		ctx   = cCtx.Context
 		nodes = cCtx.StringSlice("node")
@@ -78,6 +80,9 @@ func DebugValidatorRun(cCtx *cli.Context) error {
 	}
 
 	val := resp.Validator
+
+	// fmt.Println("PUBKEY: ", string(val.ConsensusPubkey.Value[2:]))
+	// fmt.Println("VALIDATOR: ", val.String())
 
 	cdc := codec.NewLegacyAmino()
 	j, err := cdc.MarshalJSONIndent(val, "", "  ")
@@ -120,8 +125,8 @@ func DebugConsensusKeyRun(cCtx *cli.Context) error {
 		return err
 	}
 
-	fmt.Println("PUBKEY: ", resp.Validator.ConsensusPubkey.Value)
-	fmt.Println("VALIDATOR: ", resp.Validator.String())
+	// fmt.Println("PUBKEY: ", resp.Validator.ConsensusPubkey.Value)
+	// fmt.Println("VALIDATOR: ", resp.Validator.String())
 
 	val := resp.Validator
 	// pubkey := ed25519.PubKey{Key: val.ConsensusPubkey.Value[2:]}
