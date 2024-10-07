@@ -120,6 +120,9 @@ func DebugConsensusKeyRun(cCtx *cli.Context) error {
 		return err
 	}
 
+	fmt.Println("PUBKEY: ", resp.Validator.ConsensusPubkey.Value)
+	fmt.Println("VALIDATOR: ", resp.Validator.String())
+
 	val := resp.Validator
 	// pubkey := ed25519.PubKey{Key: val.ConsensusPubkey.Value[2:]}
 	pubkey := secp256k1.PubKey{Key: val.ConsensusPubkey.Value[2:]}
