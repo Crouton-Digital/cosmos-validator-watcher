@@ -49,7 +49,10 @@ func (w *CommissionWatcher) Start(ctx context.Context) error {
 func (w *CommissionWatcher) fetchCommissions(ctx context.Context, node *rpc.Node) error {
 	for _, validator := range w.validators {
 		if err := w.fetchValidatorCommission(ctx, node, validator); err != nil {
-			log.Error().Err(err).Msgf("failed to fetch commission for validator %s", validator.OperatorAddress)
+			log.Error().
+				Interface("validator", validator).
+				Err(err).
+				Msgf("failed to fetch commission for validator %s", validator.OperatorAddress)
 		}
 	}
 	return nil
@@ -63,6 +66,8 @@ func (w *CommissionWatcher) fetchValidatorCommission(ctx context.Context, node *
 		ValidatorAddress: validator.OperatorAddress,
 	})
 	if err != nil {
+		log.Error().Err(err).Interface("validator", validator).Msg("failed to get validators")
+
 		return fmt.Errorf("failed to get validators: %w", err)
 	}
 
