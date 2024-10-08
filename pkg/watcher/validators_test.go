@@ -42,7 +42,7 @@ func TestValidatorsWatcher(t *testing.T) {
 			require.NoError(t, err)
 
 			return &codectypes.Any{
-				TypeUrl: "/cosmos.crypto.ed25519.PubKey",
+				TypeUrl: "/cosmos.crypto.secp256k1.PubKey",
 				Value:   ba,
 			}
 		}
