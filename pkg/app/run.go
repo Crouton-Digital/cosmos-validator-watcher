@@ -305,7 +305,7 @@ func createTrackedValidators(ctx context.Context, pool *rpc.Pool, validators []s
 
 		resp, err := queryClient.Validators(ctx, &staking.QueryValidatorsRequest{
 			Pagination: &query.PageRequest{
-				Limit: 3000,
+				Limit: 30000,
 			},
 		})
 		if err != nil {
@@ -314,13 +314,19 @@ func createTrackedValidators(ctx context.Context, pool *rpc.Pool, validators []s
 		stakingValidators = resp.Validators
 	}
 
+	log.Info().Interface("stakingValidators", stakingValidators).Interface("validators", validators).Msgf("found %d staking validators", len(stakingValidators))
+
 	trackedValidators := lo.Map(validators, func(v string, _ int) watcher.TrackedValidator {
 		val := watcher.ParseValidator(v)
 
-		for _, stakingVal := range stakingValidators {
-			log.Debug().Interface("stakingVal", stakingVal).Msg("stakingVal")
+		// log.Info().Interface("val", val).Msg("val")
 
+		for _, stakingVal := range stakingValidators {
+			// log.Debug().Interface("stakingVal", stakingVal).Msg("stakingVal")
+			// log.Debug().Str("address", val.Address).Interface("consensusPubkey", stakingVal.ConsensusPubkey.Value).Msg("comparing")
 			pubkey := secp256k1.PubKey{Key: stakingVal.ConsensusPubkey.Value[2:]}
+
+			// log.Debug().Str("address", val.Address).Str("pubkey", pubkey.Address().String()).Msg("comparing")
 			address := pubkey.Address().String()
 			if address == val.Address {
 				val.Moniker = stakingVal.Description.Moniker
