@@ -318,6 +318,8 @@ func createTrackedValidators(ctx context.Context, pool *rpc.Pool, validators []s
 		val := watcher.ParseValidator(v)
 
 		for _, stakingVal := range stakingValidators {
+			log.Debug().Interface("stakingVal", stakingVal).Msg("stakingVal")
+
 			pubkey := secp256k1.PubKey{Key: stakingVal.ConsensusPubkey.Value[2:]}
 			address := pubkey.Address().String()
 			if address == val.Address {
