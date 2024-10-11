@@ -64,7 +64,7 @@ func (w *ValidatorsWatcher) fetchValidators(ctx context.Context, node *rpc.Node)
 
 	validators, err := queryClient.Validators(ctx, &staking.QueryValidatorsRequest{
 		Pagination: &query.PageRequest{
-			Limit: 3000,
+			Limit: 30000,
 		},
 	})
 	if err != nil {
