@@ -19,17 +19,18 @@ type Metrics struct {
 	UpgradePlan     *prometheus.GaugeVec
 
 	// Validator metrics
-	Rank             		*prometheus.GaugeVec
-	ProposedBlocks   		*prometheus.CounterVec
-	ValidatedBlocks  		*prometheus.CounterVec
-	MissedBlocks     		*prometheus.CounterVec
-	SoloMissedBlocks 		*prometheus.CounterVec
+	Rank                    *prometheus.GaugeVec
+	ProposedBlocks          *prometheus.CounterVec
+	ValidatedBlocks         *prometheus.CounterVec
+	MissedBlocks            *prometheus.CounterVec
+	SoloMissedBlocks        *prometheus.CounterVec
 	ConsecutiveMissedBlocks *prometheus.GaugeVec
-	Tokens           		*prometheus.GaugeVec
-	IsBonded         		*prometheus.GaugeVec
-	IsJailed         		*prometheus.GaugeVec
-	Commission       		*prometheus.GaugeVec
-	Vote             		*prometheus.GaugeVec
+	Tokens                  *prometheus.GaugeVec
+	IsBonded                *prometheus.GaugeVec
+	IsJailed                *prometheus.GaugeVec
+	Commission              *prometheus.GaugeVec
+	Vote                    *prometheus.GaugeVec
+	LastValidatedBlockTime  *prometheus.GaugeVec
 
 	// Node metrics
 	NodeBlockHeight *prometheus.GaugeVec
@@ -39,6 +40,14 @@ type Metrics struct {
 func New(namespace string) *Metrics {
 	metrics := &Metrics{
 		Registry: prometheus.NewRegistry(),
+		// LastSignedBlockTimestamp: prometheus.NewGaugeVec(
+		// 	prometheus.GaugeOpts{
+		// 		Namespace: namespace,
+		// 		Name:      "last_signed_block_timestamp",
+		// 		Help:      "Timestamp of the last signed block",
+		// 	},
+		// 	[]string{"chain_id"},
+		// ),
 		BlockHeight: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
 				Namespace: namespace,
@@ -207,6 +216,14 @@ func New(namespace string) *Metrics {
 			},
 			[]string{"chain_id", "proposal_id"},
 		),
+		LastValidatedBlockTime: prometheus.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Namespace: namespace,
+				Name:      "last_validated_block_time",
+				Help:      "Timestamp of the last validated block",
+			},
+			[]string{"chain_id", "address", "name"},
+		),
 	}
 
 	return metrics
@@ -237,4 +254,5 @@ func (m *Metrics) Register() {
 	m.Registry.MustRegister(m.NodeSynced)
 	m.Registry.MustRegister(m.UpgradePlan)
 	m.Registry.MustRegister(m.ProposalEndTime)
+	m.Registry.MustRegister(m.LastValidatedBlockTime)
 }

@@ -206,10 +206,12 @@ func (w *BlockWatcher) handleBlockInfo(ctx context.Context, block *BlockInfo) {
 			w.metrics.ProposedBlocks.WithLabelValues(block.ChainID, res.Address, res.Label).Inc()
 			w.metrics.ValidatedBlocks.WithLabelValues(block.ChainID, res.Address, res.Label).Inc()
 			w.metrics.ConsecutiveMissedBlocks.WithLabelValues(block.ChainID, res.Address, res.Label).Set(0)
+			w.metrics.LastValidatedBlockTime.WithLabelValues(block.ChainID, res.Address, res.Label).Set(float64(time.Now().Unix()))
 		} else if res.Signed {
 			icon = "✅"
 			w.metrics.ValidatedBlocks.WithLabelValues(block.ChainID, res.Address, res.Label).Inc()
 			w.metrics.ConsecutiveMissedBlocks.WithLabelValues(block.ChainID, res.Address, res.Label).Set(0)
+			w.metrics.LastValidatedBlockTime.WithLabelValues(block.ChainID, res.Address, res.Label).Set(float64(time.Now().Unix()))
 		} else if res.Bonded {
 			icon = "❌"
 			w.metrics.MissedBlocks.WithLabelValues(block.ChainID, res.Address, res.Label).Inc()
