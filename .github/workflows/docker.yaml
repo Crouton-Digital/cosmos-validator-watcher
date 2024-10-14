@@ -41,5 +41,5 @@ jobs:
         uses: docker/build-push-action@v5.0.0
         with:
           context: "{{defaultContext}}"
-          tags: "ghcr.io/crouton-digita/story-validator-exporter:${{ github.ref_name }}"
+          tags: "ghcr.io/crouton-digital/story-validator-exporter:${{ github.ref_name }}"
           push: true
