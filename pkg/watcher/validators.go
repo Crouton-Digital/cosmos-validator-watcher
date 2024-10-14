@@ -113,6 +113,7 @@ func (w *ValidatorsWatcher) handleValidators(chainID string, validators []stakin
 				w.metrics.Tokens.WithLabelValues(chainID, address, name, w.opts.Denom).Set(tokens.InexactFloat64())
 				w.metrics.IsBonded.WithLabelValues(chainID, address, name).Set(metrics.BoolToFloat64(isBonded))
 				w.metrics.IsJailed.WithLabelValues(chainID, address, name).Set(metrics.BoolToFloat64(isJailed))
+				w.metrics.Commission.WithLabelValues(chainID, address, name, w.opts.Denom).Set(val.Commission.Rate.MustFloat64())
 				break
 			}
 		}
