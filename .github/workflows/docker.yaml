@@ -1,101 +1,45 @@
-name: Docker
+name: Build container
 
 on:
+  workflow_dispatch:
   push:
-    branches:
-      - main
-    paths:
-      - 'pkg/**'
-      - '*.go'
-      - 'go.*'
-      - Dockerfile
-      - .github/workflows/docker.yaml
-  pull_request:
-    branches:
-      - main
-    paths:
-      - 'pkg/**'
-      - '*.go'
-      - 'go.*'
-      - Dockerfile
-      - .github/workflows/docker.yaml
-  release:
-    types:
-      - published
+    tags: [ 'v*.*.*' ]
+
 
 env:
+  # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
+  # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
-  PLATFORMS: ${{ github.event_name == 'pull_request' && 'linux/amd64' || 'linux/amd64,linux/arm64' }}
 
 jobs:
-  build:
+  build_container:
+    name: Build and Push image to GitHub Containers
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-
+      # This is used to complete the identity challenge
+      # with sigstore/fulcio when running outside of PRs.
+      #id-token: write
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
         with:
-          fetch-depth: 0
-          fetch-tags: true
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-
-      - name: "Generate Build ID (main)"
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+          registry: ghcr.io
+          username: ${{github.actor}}
+          password: ${{secrets.GITHUB_TOKEN}}
+      - name: Set correct environment
         run: |
-          branch=${GITHUB_REF##*/}
-          sha=${GITHUB_SHA::8}
-          ts=$(date +%s)
-          echo "BUILD_ID=${branch}-${ts}-${sha}" >> $GITHUB_ENV
-
-      - name: "Generate Build ID (PR)"
-        if: github.event_name == 'pull_request'
-        run: |
-          echo "BUILD_ID=pr-${{ github.event.number }}-$GITHUB_RUN_ID" >> $GITHUB_ENV
-
-      - name: "Generate Build ID (Release)"
-        if: github.event_name == 'release'
-        run: |
-          echo "BUILD_ID=${GITHUB_REF##*/}" >> $GITHUB_ENV
-
-      - name: 'Generate App Version'
-        run: echo "VERSION=$(make version)" >> $GITHUB_ENV
-
-      - name: Log in to the Container registry
-        uses: docker/login-action@v2
+          echo "Git from GITHUB_REF_NAME: $GITHUB_SHA"
+          echo "Git from container tag: ${{ github.ref_name }}"
+      - name: Set Datetime as Environment Variable
+        run: echo "DATETIME=$(date +'%Y-%m-%d_%H-%M-%S')" >> $GITHUB_ENV
+      - name: Set $GITHUB_ENV as Environment Variable
+        run: echo "GIT_SHA=$GITHUB_SHA" >> $GITHUB_ENV
+      - name: Build and push image
+        uses: docker/build-push-action@v5.0.0
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: |
-            type=ref,event=pr
-            type=ref,event=branch
-            type=raw,value=${{ env.BUILD_ID }}
-            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
+          context: "{{defaultContext}}"
+          tags: "ghcr.io/crouton-digita/story-validator-exporter:${{ github.ref_name }}"
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          platforms: ${{ env.PLATFORMS }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          build-args: |
-            VERSION=${{ env.VERSION }}
