@@ -32,6 +32,35 @@ type Metrics struct {
 	Vote                    *prometheus.GaugeVec
 	LastValidatedBlockTime  *prometheus.GaugeVec
 
+	// Metrics from the validator API watcher
+	ValidatorBalanceAvailable               *prometheus.GaugeVec
+	ValidatorCommission                     *prometheus.GaugeVec
+	ValidatorBalanceDelegated               *prometheus.GaugeVec
+	ValidatorBalanceReward                  *prometheus.GaugeVec
+	ValidatorBalanceUnBonding               *prometheus.GaugeVec
+	ValidatorDelegators                     *prometheus.GaugeVec
+	ValidatorStatus                         *prometheus.GaugeVec
+	ValidatorTokens                         *prometheus.GaugeVec
+	ValidatorCommissionRate                 *prometheus.GaugeVec
+	ValidatorDelegatorShares                *prometheus.GaugeVec
+	ValidatorUnbondingTime                  *prometheus.GaugeVec
+	ValidatorMinSelfDelegation              *prometheus.GaugeVec
+	ValidatorParticipationRate              *prometheus.GaugeVec
+	ValidatorSigningInfo                    *prometheus.GaugeVec
+	ValidatorUptime                         *prometheus.GaugeVec
+	ValidatorVotingPowerPercent             *prometheus.GaugeVec
+	ValidatorCumulativeShare                *prometheus.GaugeVec
+	ValidatorParticipationTotal             *prometheus.GaugeVec
+	ValidatorParticipationVoted             *prometheus.GaugeVec
+	ValidatorSigningInfoBondedHeight        *prometheus.GaugeVec
+	ValidatorSigningInfoTombstoned          *prometheus.GaugeVec
+	ValidatorUptimeHistoricalEarliestHeight *prometheus.GaugeVec
+	ValidatorUptimeHistoricalLastSyncHeight *prometheus.GaugeVec
+	ValidatorUptimeHistoricalSuccessBlocks  *prometheus.GaugeVec
+	ValidatorUptimeWindowUptime             *prometheus.GaugeVec
+	ValidatorUptimeWindowStart              *prometheus.GaugeVec
+	ValidatorUptimeWindowEnd                *prometheus.GaugeVec
+
 	// Node metrics
 	NodeBlockHeight *prometheus.GaugeVec
 	NodeSynced      *prometheus.GaugeVec
@@ -224,6 +253,224 @@ func New(namespace string) *Metrics {
 			},
 			[]string{"chain_id", "address", "name"},
 		),
+
+		// Metrics from the validator API watcher
+		ValidatorBalanceAvailable: prometheus.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Namespace: namespace,
+				Name:      "validator_balance_available",
+				Help:      "Validator balance available",
+			},
+			[]string{"address"},
+		),
+		ValidatorCommission: prometheus.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Namespace: namespace,
+				Name:      "validator_balance_commission",
+				Help:      "Validator commission",
+			},
+			[]string{"address"},
+		),
+		ValidatorBalanceDelegated: prometheus.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Namespace: namespace,
+				Name:      "validator_balance_delegated",
+				Help:      "Validator balance delegated",
+			},
+			[]string{"address"},
+		),
+		ValidatorBalanceReward: prometheus.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Namespace: namespace,
+				Name:      "validator_balance_reward",
+				Help:      "Validator balance reward",
+			},
+			[]string{"address"},
+		),
+		ValidatorBalanceUnBonding: prometheus.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Namespace: namespace,
+				Name:      "validator_balance_unbonding",
+				Help:      "Validator balance unbonding",
+			},
+			[]string{"address"},
+		),
+		ValidatorDelegators: prometheus.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Namespace: namespace,
+				Name:      "validator_delegators",
+				Help:      "Validator delegators",
+			},
+			[]string{"address"},
+		),
+		ValidatorStatus: prometheus.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Namespace: namespace,
+				Name:      "validator_status",
+				Help:      "Validator status",
+			},
+			[]string{"address"},
+		),
+		ValidatorTokens: prometheus.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Namespace: namespace,
+				Name:      "validator_tokens",
+				Help:      "Validator tokens",
+			},
+			[]string{"address"},
+		),
+		ValidatorCommissionRate: prometheus.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Namespace: namespace,
+				Name:      "validator_commission_rate",
+				Help:      "Validator commission rate",
+			},
+			[]string{"address"},
+		),
+		ValidatorDelegatorShares: prometheus.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Namespace: namespace,
+				Name:      "validator_delegator_shares",
+				Help:      "Validator delegator shares",
+			},
+			[]string{"address"},
+		),
+		ValidatorUnbondingTime: prometheus.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Namespace: namespace,
+				Name:      "validator_unbonding_time",
+				Help:      "Validator unbonding time",
+			},
+			[]string{"address"},
+		),
+		ValidatorMinSelfDelegation: prometheus.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Namespace: namespace,
+				Name:      "validator_min_self_delegation",
+				Help:      "Validator min self delegation",
+			},
+			[]string{"address"},
+		),
+		ValidatorParticipationRate: prometheus.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Namespace: namespace,
+				Name:      "validator_participation_rate",
+				Help:      "Validator participation rate",
+			},
+			[]string{"address"},
+		),
+		ValidatorParticipationTotal: prometheus.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Namespace: namespace,
+				Name:      "validator_participation_total",
+				Help:      "Validator participation total",
+			},
+			[]string{"address"},
+		),
+		ValidatorSigningInfo: prometheus.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Namespace: namespace,
+				Name:      "validator_signing_info",
+				Help:      "Validator signing info",
+			},
+			[]string{"address"},
+		),
+		ValidatorUptime: prometheus.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Namespace: namespace,
+				Name:      "validator_uptime",
+				Help:      "Validator uptime",
+			},
+			[]string{"address"},
+		),
+		ValidatorVotingPowerPercent: prometheus.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Namespace: namespace,
+				Name:      "validator_voting_power_percent",
+				Help:      "Validator voting power percent",
+			},
+			[]string{"address"},
+		),
+		ValidatorCumulativeShare: prometheus.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Namespace: namespace,
+				Name:      "validator_cumulative_share",
+				Help:      "Validator cumulative share",
+			},
+			[]string{"address"},
+		),
+		ValidatorParticipationVoted: prometheus.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Namespace: namespace,
+				Name:      "validator_participation_voted",
+				Help:      "Validator participation voted",
+			},
+			[]string{"address"},
+		),
+		ValidatorSigningInfoBondedHeight: prometheus.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Namespace: namespace,
+				Name:      "validator_signing_info_bonded_height",
+				Help:      "Validator signing info bonded height",
+			},
+			[]string{"address"},
+		),
+		ValidatorSigningInfoTombstoned: prometheus.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Namespace: namespace,
+				Name:      "validator_signing_info_tombstoned",
+				Help:      "Validator signing info tombstoned",
+			},
+			[]string{"address"},
+		),
+		ValidatorUptimeHistoricalEarliestHeight: prometheus.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Namespace: namespace,
+				Name:      "validator_uptime_historical_earliest_height",
+				Help:      "Validator uptime historical earliest height",
+			},
+			[]string{"address"},
+		),
+		ValidatorUptimeHistoricalLastSyncHeight: prometheus.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Namespace: namespace,
+				Name:      "validator_uptime_historical_last_sync_height",
+				Help:      "Validator uptime historical last sync height",
+			},
+			[]string{"address"},
+		),
+		ValidatorUptimeHistoricalSuccessBlocks: prometheus.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Namespace: namespace,
+				Name:      "validator_uptime_historical_success_blocks",
+				Help:      "Validator uptime historical success blocks",
+			},
+			[]string{"address"},
+		),
+		ValidatorUptimeWindowUptime: prometheus.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Namespace: namespace,
+				Name:      "validator_uptime_window_uptime",
+				Help:      "Validator uptime window uptime",
+			},
+			[]string{"address"},
+		),
+		ValidatorUptimeWindowStart: prometheus.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Namespace: namespace,
+				Name:      "validator_uptime_window_start",
+				Help:      "Validator uptime window start",
+			},
+			[]string{"address"},
+		),
+		ValidatorUptimeWindowEnd: prometheus.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Namespace: namespace,
+				Name:      "validator_uptime_window_end",
+				Help:      "Validator uptime window end",
+			},
+			[]string{"address"},
+		),
 	}
 
 	return metrics
@@ -255,4 +502,33 @@ func (m *Metrics) Register() {
 	m.Registry.MustRegister(m.UpgradePlan)
 	m.Registry.MustRegister(m.ProposalEndTime)
 	m.Registry.MustRegister(m.LastValidatedBlockTime)
+
+	m.Registry.MustRegister(m.ValidatorBalanceAvailable)
+	m.Registry.MustRegister(m.ValidatorCommission)
+	m.Registry.MustRegister(m.ValidatorBalanceDelegated)
+	m.Registry.MustRegister(m.ValidatorBalanceReward)
+	m.Registry.MustRegister(m.ValidatorBalanceUnBonding)
+	m.Registry.MustRegister(m.ValidatorDelegators)
+	m.Registry.MustRegister(m.ValidatorStatus)
+	m.Registry.MustRegister(m.ValidatorTokens)
+	m.Registry.MustRegister(m.ValidatorCommissionRate)
+	m.Registry.MustRegister(m.ValidatorDelegatorShares)
+	m.Registry.MustRegister(m.ValidatorUnbondingTime)
+	m.Registry.MustRegister(m.ValidatorMinSelfDelegation)
+	m.Registry.MustRegister(m.ValidatorParticipationRate)
+	m.Registry.MustRegister(m.ValidatorSigningInfo)
+	m.Registry.MustRegister(m.ValidatorUptime)
+	m.Registry.MustRegister(m.ValidatorVotingPowerPercent)
+	m.Registry.MustRegister(m.ValidatorCumulativeShare)
+	m.Registry.MustRegister(m.ValidatorParticipationTotal)
+	m.Registry.MustRegister(m.ValidatorParticipationVoted)
+	m.Registry.MustRegister(m.ValidatorSigningInfoBondedHeight)
+	m.Registry.MustRegister(m.ValidatorSigningInfoTombstoned)
+	m.Registry.MustRegister(m.ValidatorUptimeHistoricalEarliestHeight)
+	m.Registry.MustRegister(m.ValidatorUptimeHistoricalLastSyncHeight)
+	m.Registry.MustRegister(m.ValidatorUptimeHistoricalSuccessBlocks)
+	m.Registry.MustRegister(m.ValidatorUptimeWindowUptime)
+	m.Registry.MustRegister(m.ValidatorUptimeWindowStart)
+	m.Registry.MustRegister(m.ValidatorUptimeWindowEnd)
+
 }

@@ -7,6 +7,7 @@ import (
 )
 
 type TrackedValidator struct {
+	Account         string
 	Address         string
 	Name            string
 	Moniker         string

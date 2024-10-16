@@ -3,11 +3,13 @@ package app
 import (
 	"context"
 	"fmt"
+	netHTTP "net/http"
 	"net/url"
 	"os"
 	"os/signal"
 	"strconv"
 	"syscall"
+	"time"
 
 	"github.com/cometbft/cometbft/rpc/client/http"
 	"github.com/cosmos/cosmos-sdk/client"
@@ -139,6 +141,19 @@ func RunFunc(cCtx *cli.Context) error {
 		errg.Go(func() error {
 			return validatorsWatcher.Start(ctx)
 		})
+
+		// Validators API watcher
+		// apiClient, err := http.New("https://api.testnet.storyscan.app")
+		// apiClient, err := http.Client("https://api.testnet.storyscan.app")
+		apiClient := &netHTTP.Client{
+			Timeout: 10 * time.Second,
+		}
+
+		validatorsAPIWatcher := watcher.NewValidatorsAPIWatcher(trackedValidators, metrics, apiClient)
+		errg.Go(func() error {
+			return validatorsAPIWatcher.Start(ctx)
+		})
+
 	}
 	if xGov != "v1beta1" && xGov != "v1" {
 		log.Warn().Msgf("unknown gov module version: %s (fallback to v1)", xGov)
@@ -346,6 +361,8 @@ func createTrackedValidators(ctx context.Context, pool *rpc.Pool, validators []s
 			Str("moniker", val.Moniker).
 			Str("operator", val.OperatorAddress).
 			Msgf("validator info")
+
+		val.Account = val.AccountAddress()
 
 		return val
 	})
