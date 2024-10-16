@@ -261,7 +261,7 @@ func New(namespace string) *Metrics {
 				Name:      "validator_balance_available",
 				Help:      "Validator balance available",
 			},
-			[]string{"address"},
+			[]string{"address", "name"},
 		),
 		ValidatorCommission: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
@@ -269,7 +269,7 @@ func New(namespace string) *Metrics {
 				Name:      "validator_balance_commission",
 				Help:      "Validator commission",
 			},
-			[]string{"address"},
+			[]string{"address", "name"},
 		),
 		ValidatorBalanceDelegated: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
@@ -277,7 +277,7 @@ func New(namespace string) *Metrics {
 				Name:      "validator_balance_delegated",
 				Help:      "Validator balance delegated",
 			},
-			[]string{"address"},
+			[]string{"address", "name"},
 		),
 		ValidatorBalanceReward: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
@@ -285,7 +285,7 @@ func New(namespace string) *Metrics {
 				Name:      "validator_balance_reward",
 				Help:      "Validator balance reward",
 			},
-			[]string{"address"},
+			[]string{"address", "name"},
 		),
 		ValidatorBalanceUnBonding: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
@@ -293,7 +293,7 @@ func New(namespace string) *Metrics {
 				Name:      "validator_balance_unbonding",
 				Help:      "Validator balance unbonding",
 			},
-			[]string{"address"},
+			[]string{"address", "name"},
 		),
 		ValidatorDelegators: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
@@ -301,7 +301,7 @@ func New(namespace string) *Metrics {
 				Name:      "validator_delegators",
 				Help:      "Validator delegators",
 			},
-			[]string{"address"},
+			[]string{"address", "name"},
 		),
 		ValidatorStatus: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
@@ -309,7 +309,7 @@ func New(namespace string) *Metrics {
 				Name:      "validator_status",
 				Help:      "Validator status",
 			},
-			[]string{"address"},
+			[]string{"address", "name"},
 		),
 		ValidatorTokens: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
@@ -317,7 +317,7 @@ func New(namespace string) *Metrics {
 				Name:      "validator_tokens",
 				Help:      "Validator tokens",
 			},
-			[]string{"address"},
+			[]string{"address", "name"},
 		),
 		ValidatorCommissionRate: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
@@ -325,7 +325,7 @@ func New(namespace string) *Metrics {
 				Name:      "validator_commission_rate",
 				Help:      "Validator commission rate",
 			},
-			[]string{"address"},
+			[]string{"address", "name"},
 		),
 		ValidatorDelegatorShares: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
@@ -333,7 +333,7 @@ func New(namespace string) *Metrics {
 				Name:      "validator_delegator_shares",
 				Help:      "Validator delegator shares",
 			},
-			[]string{"address"},
+			[]string{"address", "name"},
 		),
 		ValidatorUnbondingTime: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
@@ -341,7 +341,7 @@ func New(namespace string) *Metrics {
 				Name:      "validator_unbonding_time",
 				Help:      "Validator unbonding time",
 			},
-			[]string{"address"},
+			[]string{"address", "name"},
 		),
 		ValidatorMinSelfDelegation: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
@@ -349,7 +349,7 @@ func New(namespace string) *Metrics {
 				Name:      "validator_min_self_delegation",
 				Help:      "Validator min self delegation",
 			},
-			[]string{"address"},
+			[]string{"address", "name"},
 		),
 		ValidatorParticipationRate: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
@@ -357,7 +357,7 @@ func New(namespace string) *Metrics {
 				Name:      "validator_participation_rate",
 				Help:      "Validator participation rate",
 			},
-			[]string{"address"},
+			[]string{"address", "name"},
 		),
 		ValidatorParticipationTotal: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
@@ -365,7 +365,7 @@ func New(namespace string) *Metrics {
 				Name:      "validator_participation_total",
 				Help:      "Validator participation total",
 			},
-			[]string{"address"},
+			[]string{"address", "name"},
 		),
 		ValidatorSigningInfo: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
@@ -373,7 +373,7 @@ func New(namespace string) *Metrics {
 				Name:      "validator_signing_info",
 				Help:      "Validator signing info",
 			},
-			[]string{"address"},
+			[]string{"address", "name"},
 		),
 		ValidatorUptime: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
@@ -381,7 +381,7 @@ func New(namespace string) *Metrics {
 				Name:      "validator_uptime",
 				Help:      "Validator uptime",
 			},
-			[]string{"address"},
+			[]string{"address", "name"},
 		),
 		ValidatorVotingPowerPercent: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
@@ -389,7 +389,7 @@ func New(namespace string) *Metrics {
 				Name:      "validator_voting_power_percent",
 				Help:      "Validator voting power percent",
 			},
-			[]string{"address"},
+			[]string{"address", "name"},
 		),
 		ValidatorCumulativeShare: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
@@ -397,7 +397,7 @@ func New(namespace string) *Metrics {
 				Name:      "validator_cumulative_share",
 				Help:      "Validator cumulative share",
 			},
-			[]string{"address"},
+			[]string{"address", "name"},
 		),
 		ValidatorParticipationVoted: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
@@ -405,7 +405,7 @@ func New(namespace string) *Metrics {
 				Name:      "validator_participation_voted",
 				Help:      "Validator participation voted",
 			},
-			[]string{"address"},
+			[]string{"address", "name"},
 		),
 		ValidatorSigningInfoBondedHeight: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
@@ -413,7 +413,7 @@ func New(namespace string) *Metrics {
 				Name:      "validator_signing_info_bonded_height",
 				Help:      "Validator signing info bonded height",
 			},
-			[]string{"address"},
+			[]string{"address", "name"},
 		),
 		ValidatorSigningInfoTombstoned: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
@@ -421,7 +421,7 @@ func New(namespace string) *Metrics {
 				Name:      "validator_signing_info_tombstoned",
 				Help:      "Validator signing info tombstoned",
 			},
-			[]string{"address"},
+			[]string{"address", "name"},
 		),
 		ValidatorUptimeHistoricalEarliestHeight: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
@@ -429,7 +429,7 @@ func New(namespace string) *Metrics {
 				Name:      "validator_uptime_historical_earliest_height",
 				Help:      "Validator uptime historical earliest height",
 			},
-			[]string{"address"},
+			[]string{"address", "name"},
 		),
 		ValidatorUptimeHistoricalLastSyncHeight: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
@@ -437,7 +437,7 @@ func New(namespace string) *Metrics {
 				Name:      "validator_uptime_historical_last_sync_height",
 				Help:      "Validator uptime historical last sync height",
 			},
-			[]string{"address"},
+			[]string{"address", "name"},
 		),
 		ValidatorUptimeHistoricalSuccessBlocks: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
@@ -445,7 +445,7 @@ func New(namespace string) *Metrics {
 				Name:      "validator_uptime_historical_success_blocks",
 				Help:      "Validator uptime historical success blocks",
 			},
-			[]string{"address"},
+			[]string{"address", "name"},
 		),
 		ValidatorUptimeWindowUptime: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
@@ -453,7 +453,7 @@ func New(namespace string) *Metrics {
 				Name:      "validator_uptime_window_uptime",
 				Help:      "Validator uptime window uptime",
 			},
-			[]string{"address"},
+			[]string{"address", "name"},
 		),
 		ValidatorUptimeWindowStart: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
@@ -461,7 +461,7 @@ func New(namespace string) *Metrics {
 				Name:      "validator_uptime_window_start",
 				Help:      "Validator uptime window start",
 			},
-			[]string{"address"},
+			[]string{"address", "name"},
 		),
 		ValidatorUptimeWindowEnd: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
@@ -469,7 +469,7 @@ func New(namespace string) *Metrics {
 				Name:      "validator_uptime_window_end",
 				Help:      "Validator uptime window end",
 			},
-			[]string{"address"},
+			[]string{"address", "name"},
 		),
 	}
 

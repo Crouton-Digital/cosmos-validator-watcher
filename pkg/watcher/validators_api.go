@@ -127,11 +127,11 @@ func (w *ValidatorsAPIWatcher) fetchAccount(ctx context.Context, validator Track
 	log.Debug().Interface("account", account).Str("validator", validator.Account).Msg("fetched account info")
 
 	// update metrics
-	w.metrics.ValidatorBalanceAvailable.WithLabelValues(validator.Address).Set(float64(account.Balance.Available))
-	w.metrics.ValidatorCommission.WithLabelValues(validator.Address).Set(float64(account.Balance.Commission))
-	w.metrics.ValidatorBalanceDelegated.WithLabelValues(validator.Address).Set(float64(account.Balance.Delegated))
-	w.metrics.ValidatorBalanceReward.WithLabelValues(validator.Address).Set(float64(account.Balance.Reward))
-	w.metrics.ValidatorBalanceUnBonding.WithLabelValues(validator.Address).Set(float64(account.Balance.Unbonding))
+	w.metrics.ValidatorBalanceAvailable.WithLabelValues(validator.Address, validator.Name).Set(float64(account.Balance.Available))
+	w.metrics.ValidatorCommission.WithLabelValues(validator.Address, validator.Name).Set(float64(account.Balance.Commission))
+	w.metrics.ValidatorBalanceDelegated.WithLabelValues(validator.Address, validator.Name).Set(float64(account.Balance.Delegated))
+	w.metrics.ValidatorBalanceReward.WithLabelValues(validator.Address, validator.Name).Set(float64(account.Balance.Reward))
+	w.metrics.ValidatorBalanceUnBonding.WithLabelValues(validator.Address, validator.Name).Set(float64(account.Balance.Unbonding))
 
 	return nil
 }
@@ -218,25 +218,25 @@ func (w *ValidatorsAPIWatcher) fetchValidator(ctx context.Context, validator Tra
 	log.Debug().Interface("validator", apiValidator).Str("validator", validator.Account).Msg("fetched validator info")
 
 	// update metrics
-	w.metrics.ValidatorStatus.WithLabelValues(validator.Address).Set(float64(apiValidator.Status))
-	w.metrics.ValidatorTokens.WithLabelValues(validator.Address).Set(float64(apiValidator.Tokens))
-	w.metrics.ValidatorCommissionRate.WithLabelValues(validator.Address).Set(MustFloat64(apiValidator.Commission.CommissionRates.Rate))
-	w.metrics.ValidatorDelegatorShares.WithLabelValues(validator.Address).Set(MustFloat64(apiValidator.DelegatorShares))
-	w.metrics.ValidatorUnbondingTime.WithLabelValues(validator.Address).Set(float64(apiValidator.UnbondingTime.Unix()))
-	w.metrics.ValidatorMinSelfDelegation.WithLabelValues(validator.Address).Set(MustFloat64(apiValidator.MinSelfDelegation))
-	w.metrics.ValidatorParticipationRate.WithLabelValues(validator.Address).Set(float64(apiValidator.Participation.Rate))
-	w.metrics.ValidatorParticipationTotal.WithLabelValues(validator.Address).Set(float64(apiValidator.Participation.Total))
-	w.metrics.ValidatorParticipationVoted.WithLabelValues(validator.Address).Set(float64(apiValidator.Participation.Voted))
-	w.metrics.ValidatorSigningInfoBondedHeight.WithLabelValues(validator.Address).Set(float64(apiValidator.SigningInfo.BondedHeight))
-	w.metrics.ValidatorSigningInfoTombstoned.WithLabelValues(validator.Address).Set(metrics.BoolToFloat64(apiValidator.SigningInfo.Tombstoned))
-	w.metrics.ValidatorUptimeHistoricalEarliestHeight.WithLabelValues(validator.Address).Set(float64(apiValidator.Uptime.HistoricalUptime.EarliestHeight))
-	w.metrics.ValidatorUptimeHistoricalLastSyncHeight.WithLabelValues(validator.Address).Set(float64(apiValidator.Uptime.HistoricalUptime.LastSyncHeight))
-	w.metrics.ValidatorUptimeHistoricalSuccessBlocks.WithLabelValues(validator.Address).Set(float64(apiValidator.Uptime.HistoricalUptime.SuccessBlocks))
-	w.metrics.ValidatorUptimeWindowUptime.WithLabelValues(validator.Address).Set(apiValidator.Uptime.WindowUptime.Uptime)
-	w.metrics.ValidatorUptimeWindowStart.WithLabelValues(validator.Address).Set(float64(apiValidator.Uptime.WindowUptime.WindowStart))
-	w.metrics.ValidatorUptimeWindowEnd.WithLabelValues(validator.Address).Set(float64(apiValidator.Uptime.WindowUptime.WindowEnd))
-	w.metrics.ValidatorVotingPowerPercent.WithLabelValues(validator.Address).Set(apiValidator.VotingPowerPercent)
-	w.metrics.ValidatorCumulativeShare.WithLabelValues(validator.Address).Set(apiValidator.CumulativeShare)
+	w.metrics.ValidatorStatus.WithLabelValues(validator.Address, validator.Name).Set(float64(apiValidator.Status))
+	w.metrics.ValidatorTokens.WithLabelValues(validator.Address, validator.Name).Set(float64(apiValidator.Tokens))
+	w.metrics.ValidatorCommissionRate.WithLabelValues(validator.Address, validator.Name).Set(MustFloat64(apiValidator.Commission.CommissionRates.Rate))
+	w.metrics.ValidatorDelegatorShares.WithLabelValues(validator.Address, validator.Name).Set(MustFloat64(apiValidator.DelegatorShares))
+	w.metrics.ValidatorUnbondingTime.WithLabelValues(validator.Address, validator.Name).Set(float64(apiValidator.UnbondingTime.Unix()))
+	w.metrics.ValidatorMinSelfDelegation.WithLabelValues(validator.Address, validator.Name).Set(MustFloat64(apiValidator.MinSelfDelegation))
+	w.metrics.ValidatorParticipationRate.WithLabelValues(validator.Address, validator.Name).Set(float64(apiValidator.Participation.Rate))
+	w.metrics.ValidatorParticipationTotal.WithLabelValues(validator.Address, validator.Name).Set(float64(apiValidator.Participation.Total))
+	w.metrics.ValidatorParticipationVoted.WithLabelValues(validator.Address, validator.Name).Set(float64(apiValidator.Participation.Voted))
+	w.metrics.ValidatorSigningInfoBondedHeight.WithLabelValues(validator.Address, validator.Name).Set(float64(apiValidator.SigningInfo.BondedHeight))
+	w.metrics.ValidatorSigningInfoTombstoned.WithLabelValues(validator.Address, validator.Name).Set(metrics.BoolToFloat64(apiValidator.SigningInfo.Tombstoned))
+	w.metrics.ValidatorUptimeHistoricalEarliestHeight.WithLabelValues(validator.Address, validator.Name).Set(float64(apiValidator.Uptime.HistoricalUptime.EarliestHeight))
+	w.metrics.ValidatorUptimeHistoricalLastSyncHeight.WithLabelValues(validator.Address, validator.Name).Set(float64(apiValidator.Uptime.HistoricalUptime.LastSyncHeight))
+	w.metrics.ValidatorUptimeHistoricalSuccessBlocks.WithLabelValues(validator.Address, validator.Name).Set(float64(apiValidator.Uptime.HistoricalUptime.SuccessBlocks))
+	w.metrics.ValidatorUptimeWindowUptime.WithLabelValues(validator.Address, validator.Name).Set(apiValidator.Uptime.WindowUptime.Uptime)
+	w.metrics.ValidatorUptimeWindowStart.WithLabelValues(validator.Address, validator.Name).Set(float64(apiValidator.Uptime.WindowUptime.WindowStart))
+	w.metrics.ValidatorUptimeWindowEnd.WithLabelValues(validator.Address, validator.Name).Set(float64(apiValidator.Uptime.WindowUptime.WindowEnd))
+	w.metrics.ValidatorVotingPowerPercent.WithLabelValues(validator.Address, validator.Name).Set(apiValidator.VotingPowerPercent)
+	w.metrics.ValidatorCumulativeShare.WithLabelValues(validator.Address, validator.Name).Set(apiValidator.CumulativeShare)
 
 	return nil
 }
@@ -280,7 +280,7 @@ func (w *ValidatorsAPIWatcher) fetchDelegator(ctx context.Context, validator Tra
 	// log.Debug().Str("validator", validator.Account).Int("delegators", apiResponse.ValidatorDelegators).Msg("fetched delegator info")
 
 	// update metrics
-	w.metrics.ValidatorDelegators.WithLabelValues(validator.Address).Set(float64(apiResponse.ValidatorDelegators))
+	w.metrics.ValidatorDelegators.WithLabelValues(validator.Address, validator.Name).Set(float64(apiResponse.ValidatorDelegators))
 
 	return nil
 }
